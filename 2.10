@@ -1,0 +1,66 @@
+﻿#include <iostream>
+#include <cmath>
+#include <limits>
+
+using namespace std;
+
+int main() {
+
+    double m, Cl, Cd, rho, V, h_target, T_min, T_max, dT;
+
+    cout << "Enter m: ";
+    cin >> m;
+    cout << "Enter Cl: ";
+    cin >> Cl;
+    cout << "Enter Cd: ";
+    cin >> Cd;
+    cout << "Enter rho: ";
+    cin >> rho;
+    cout << "Enter V: ";
+    cin >> V;
+    cout << "Enter h: ";
+    cin >> h_target;
+    cout << "Enter T_min: ";
+    cin >> T_min;
+    cout << "Enter T_max: ";
+    cin >> T_max;
+    cout << "Enter dT: ";
+    cin >> dT;
+
+    const double g = 9.81;
+
+    double min_time = numeric_limits<double>::max();
+    double optimal_thrust = T_min;
+
+    cout << "\nThrust | Vertical Acceleration | Time to Height " << endl;
+
+    for (double T = T_min; T <= T_max + 1e-9; T += dT) {
+
+        double L = Cl * 0.5 * rho * pow(V, 2);              
+        double D = Cd * 0.5 * rho * pow(V, 2);              
+
+        double ay = (L - m * g) / m;
+
+        if (ay <= 0) {
+            cout << T << " | Cannot climb (ay <= 0) |" << endl;
+            continue;
+        }
+
+        
+        double time_to_height = sqrt(2 * h_target / ay);
+
+        
+        cout << T << " | " << ay << " | " << time_to_height << endl;
+
+        
+        if (time_to_height < min_time) {
+            min_time = time_to_height;
+            optimal_thrust = T;
+        }
+    }
+
+    cout << "Optimal thrust: " << optimal_thrust << " N" << endl;
+    cout << "Minimum time to height: " << min_time << " s" << endl;
+
+    return 0;
+}
