@@ -1,0 +1,61 @@
+﻿#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <locale.h>
+
+using namespace std;
+
+
+int main() {
+    cout << fixed << setprecision(3);
+    double h, g = 9.81;
+    double plane[3][7];
+    double liftforce[3], resistance[3], acceleration[3], veracceleration[3], time[3];
+
+    cout << "Input target h:\n";
+    cin >> h;
+
+        for (int i = 0; i < 3; i++) {
+            cout << "Input parameters of plane" << i+1 << ": S, Cl, Cd, m, T, Speed, d\n";
+            for (int j = 0; j < 7; j++) {
+                cin >> plane[i][j];
+            }
+            cout << "\n";
+        }
+    for (int i = 0; i < 3; i++) {
+        liftforce[i] = (plane[i][0] * plane[i][1] * plane[i][6] * pow(plane[i][5], 2)) / 2;
+    }
+    for (int i = 0; i < 3; i++) {
+        resistance[i] = (plane[i][0] * plane[i][2] * plane[i][6] * pow(plane[i][5], 2)) / 2;
+    }
+    for (int i = 0; i < 3; i++) {
+        acceleration[i] = (plane[i][4] - resistance[i])/plane[i][3];
+    }
+    for (int i = 0; i < 3; i++) {
+        veracceleration[i] = (liftforce[i] - g*plane[i][3]) / plane[i][3];
+    }
+    for (int i = 0; i < 3; i++) {
+        time[i] = sqrt(2 * h / veracceleration[i]);
+    }
+
+    cout << "---------------------------------------------------------\n";
+
+    for (int i = 0; i < 3; i++) {
+        cout << "Plane" << i + 1 << ": " << time[i] << "sec\n" << endl;
+    }
+
+    int number = 0;
+    for (int i = 0; i < 3; i++) {
+        if ((time[number] > time[i]) & (number != i))
+        {
+            number = i;
+            i = 0;
+        }
+        else continue;
+    }
+    cout << "---------------------------------------------------------\n";
+    cout << "The required place number is " << number + 1 << "\n" << endl;
+
+
+};
+  
