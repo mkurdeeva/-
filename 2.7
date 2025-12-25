@@ -1,0 +1,49 @@
+﻿#include <iostream>
+#include <string>
+
+using namespace std;
+
+string determineFlightMode(double thrust, double resistance, double mass) {
+    double acceleration = (thrust - resistance) / mass;
+
+    cout << "Aircraft acceleration: " << acceleration << endl;
+
+    if (acceleration > 0.5) {
+        return "Mode: Climb";
+    }
+    else if (acceleration >= 0) {
+        return "Mode: Level Flight";
+    }
+    else {
+        return "Mode: Descent";
+    }
+}
+
+int main() {
+    double thrust, resistance, mass;
+
+    cout << "Input your parameters:" << endl;
+
+    cout << "Thrust: ";
+    cin >> thrust;
+
+    cout << "Resistance: ";
+    cin >> resistance;
+
+    cout << "Aircraft mass: ";
+    cin >> mass;
+
+    if (mass <= 0) {
+        cout << "Error: Mass must be positive!" << endl;
+        return 1;
+    }
+
+    if (cin.fail()) {
+        cout << "Error: Please enter numeric values!" << endl;
+        return 1;
+    }
+
+    cout << determineFlightMode(thrust, resistance, mass) << endl;
+
+    return 0;
+}
