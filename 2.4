@@ -1,0 +1,23 @@
+﻿#include <math.h>
+#include <iostream>
+
+using namespace std;
+
+double calculetet(double h, double ay) {
+    return sqrt(2 * h / ay);
+}
+
+int main()
+{
+    double h, ay;
+    cout << "Input h: ";
+    cin >> h;
+    cout << "Input ay: ";
+    cin >> ay;
+    if (h > 0 and ay > 0) {
+        cout << "t: " << calculetet(h, ay) <<endl;
+    }
+    else {
+        cout << "ay and h mustn't be less or equal to 0 \n";
+    }
+}
