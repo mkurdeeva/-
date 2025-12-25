@@ -1,0 +1,84 @@
+﻿#include <iostream>
+#include <cmath>
+#include <algorithm>
+
+using namespace std;
+
+const double g = 9.81; 
+
+struct Aircraft {
+    double m;          
+    double T;          
+    double Cl;          
+    double Cd;         
+    double ay;     
+    double d;
+    double v;
+    double s;
+    double time;        
+};
+
+double VerAcceleration(double m, double T, double Cl, double Cd, double v, double s, double d) {
+
+    double liftforce = (d * s * Cl * pow(v, 2))/2;
+    double resistance = (d * s * Cd * pow(v, 2)) / 2;
+    return (liftforce - m * g) / resistance;
+}
+
+double timeheight(double ay, double h) {
+    return sqrt(2 * h / ay);
+}
+
+
+void inputAircraftData(Aircraft aircrafts[], int count) {
+    for (int i = 0; i < count; i++) {
+        cout << "Input parameters for aircraft " << (i + 1) << ":\n";
+        cout << "Mass: ";
+        cin >> aircrafts[i].m;
+        cout << "Thrust: ";
+        cin >> aircrafts[i].T;
+        cout << "Cl: ";
+        cin >> aircrafts[i].Cl;
+        cout << "Cd: ";
+        cin >> aircrafts[i].Cd;
+        cout << "----------------------------\n";
+    }
+}
+
+bool compareByTime(const Aircraft& a1, const Aircraft& a2) {
+    return a1.time < a2.time;
+}
+
+int main() {
+    int n;  
+    double h;  
+
+    cout << "Enter number of aircraft: ";
+    cin >> n;
+    cout << "Input target height: ";
+    cin >> h;
+
+    Aircraft* aircrafts = new Aircraft[n];
+
+    inputAircraftData(aircrafts, n);
+
+    for (int i = 0; i < n; i++) {
+        aircrafts[i].ay = VerAcceleration(aircrafts[i].m, aircrafts[i].T, aircrafts[i].Cl, aircrafts[i].Cd, aircrafts[i].v, aircrafts[i].s, aircrafts[i].d);
+
+        aircrafts[i].time = timeheight(aircrafts[i].ay, h);
+    }
+
+    sort(aircrafts, aircrafts + n, compareByTime);
+
+    for (int i = 0; i < n; i++) {
+        cout << "  Aircraft " << (i + 1) << ":\n";
+        cout << "  Mass m: " << aircrafts[i].m << "\n";
+        cout << "  Thrust T: " << aircrafts[i].T << "\n";
+        cout << "  Lift coefficient Cl: " << aircrafts[i].Cl << "\n";
+        cout << "  Drag coefficient Cd: " << aircrafts[i].Cd << "\n";
+        cout << "  Vertical acceleration ay: " << aircrafts[i].ay << "\n";
+        cout << "  Time to reach height: " << aircrafts[i].time << " sec\n";   
+    }
+
+    return 0;
+}
