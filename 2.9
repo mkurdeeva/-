@@ -1,0 +1,113 @@
+﻿#include <iostream>
+#include <cmath>
+#include <limits>
+#include <iomanip>
+using namespace std;
+
+const double g = 9.81;
+
+struct Aircraft {
+    double m;           
+    double S;          
+    double T;           
+    double Cl;         
+    double Cd;         
+    double d;        
+    double L;         
+    double D;          
+    double a;         
+    double V;           
+};
+
+double LiftForce(double Cl, double S, double V, double d) {
+    return 0.5 * d * pow(V, 2) * S * Cl;
+}
+
+double DragForce(double Cd, double S, double V, double d) {
+    return 0.5 * d * pow(V, 2) * S * Cd;
+}
+
+double Acceleration(double T, double D, double m) {
+    return (T - D) / m;
+}
+
+void inputAircraftData(Aircraft aircrafts[], int count) {
+    for (int i = 0; i < count; i++) {
+        cout << "\nInput parameters for aircraft " << (i + 1) << ":\n";
+        cout << "Mass: ";
+        cin >> aircrafts[i].m;
+        cout << "Wing area: ";
+        cin >> aircrafts[i].S;
+        cout << "Thrust: ";
+        cin >> aircrafts[i].T;
+        cout << "Cl: ";
+        cin >> aircrafts[i].Cl;
+        cout << "Cd: ";
+        cin >> aircrafts[i].Cd;
+        cout << "Air density: ";
+        cin >> aircrafts[i].d;
+        cout << "Velocity: ";
+        cin >> aircrafts[i].V;
+    }
+}
+
+void Aerodynamics(Aircraft aircrafts[], int count) {
+    for (int i = 0; i < count; i++) {
+        aircrafts[i].L = LiftForce(aircrafts[i].Cl, aircrafts[i].S, aircrafts[i].V, aircrafts[i].d);
+        aircrafts[i].D = DragForce(aircrafts[i].Cd, aircrafts[i].S, aircrafts[i].V, aircrafts[i].d);
+        aircrafts[i].a = Acceleration(aircrafts[i].T, aircrafts[i].D, aircrafts[i].m);
+    }
+}
+
+int MaxAccelerationAircraft(Aircraft aircrafts[], int count) {
+    int maxIndex = 0;
+    double maxAcceleration = aircrafts[0].a;
+
+    for (int i = 1; i < count; i++) {
+        if (aircrafts[i].a > maxAcceleration) {
+            maxAcceleration = aircrafts[i].a;
+            maxIndex = i;
+        }
+    }
+
+    return maxIndex;
+}
+
+void displayResults(Aircraft aircrafts[], int count, int leaderIndex) {
+    for (int i = 0; i < count; i++) {
+        cout << "\nAircraft " << (i + 1) << ":\n";
+        cout << "  Mass: " << aircrafts[i].m << "\n";
+        cout << "  Wing area: " << aircrafts[i].S << "\n";
+        cout << "  Thrust: " << aircrafts[i].T << "\n";
+        cout << "  Cl: " << aircrafts[i].Cl << "\n";
+        cout << "  Cd: " << aircrafts[i].Cd << "\n";
+        cout << "  Air density: " << aircrafts[i].d << "\n";
+        cout << "  Velocity: " << aircrafts[i].V << "\n";
+        cout << "  Lift force: " << fixed << setprecision(2) << aircrafts[i].L << "\n";
+        cout << "  Drag force: " << fixed << setprecision(2) << aircrafts[i].D << "\n";
+        cout << "  Acceleration: " << fixed << setprecision(2) << aircrafts[i].a << "\n";
+    }
+
+    cout << "\nAircraft " << (leaderIndex + 1) << " has the maximum acceleration: "
+        << aircrafts[leaderIndex].a << "\n";
+}
+
+int main() {
+    int N;
+    cout << "Enter number of aircraft configurations: ";
+    cin >> N;
+
+    if (N <= 0) {
+        cout << "Invalid number of aircraft\n";
+        return 1;
+    }
+
+    Aircraft* aircrafts = new Aircraft[N];
+
+    inputAircraftData(aircrafts, N);
+    Aerodynamics(aircrafts, N);
+    int leaderIndex = MaxAccelerationAircraft(aircrafts, N);
+    displayResults(aircrafts, N, leaderIndex);
+
+    return 0;
+}
