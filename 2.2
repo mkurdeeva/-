@@ -1,0 +1,20 @@
+﻿#include <iostream>
+using namespace std;
+
+double result(double p, double v, double s, double k) {
+    return (0.5 * p * pow(v, 2) * s * k);
+}
+int main()
+{
+    double s = 0, v = 0, p = 0, k = 0;
+    cout << "Введите значение площади крыла самолета S:" << endl;
+    cin >> s;
+    cout << "Введите значение скорости самолета V:" << endl;
+    cin >> v;
+    cout << "Введите значение плотности воздуха p:" << endl;
+    cin >> p;
+    cout << "Введите значение коэффициента сопротивления k:" << endl;
+    cin >> k;
+    cout << "Аэродинамическое сопротивление равняется: " << result(p, v, s, k) << endl;
+    return 0;
+ }
