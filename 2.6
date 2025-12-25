@@ -1,0 +1,49 @@
+﻿#include <iostream>
+#include <iomanip>
+#include <cmath>
+
+using namespace std;
+
+int main() {
+    int n;
+    double S, Cl;
+
+    cout << "Number of steps: ";
+    cin >> n;
+    cout << "Input Cl, S: ";
+    cin >> S >> Cl;
+    if (n <= 0) {
+        cout << "Error" << endl;
+        return 1;
+    }
+
+    double* speed = new double[n];
+    double* d = new double[n];
+
+
+
+    cout << "\nEnter data" << endl;
+    for (int i = 0; i < n; i++) {
+        cout << "Step " << i + 1 << ":" << endl;
+        cout << "  Speed[" << i + 1 << "]: ";
+        cin >> speed[i];
+        cout << "  d[" << i + 1 << "]: ";
+        cin >> d[i];
+        cout << endl;
+    }
+
+    cout << "| step |   speed   |    den    |  liftingforce  |" << endl;
+    cout << "|------|-----------|-----------|----------------|" << endl;
+
+    for (int i = 0; i < n; i++) {
+        double liftforce = 0.5 * d[i] * pow(speed[i], 2) * S * Cl;
+
+
+        cout << "| " << setw(4) << i + 1 << " | "
+            << setw(9) << fixed << setprecision(2) << speed[i] << " | "
+            << setw(9) << fixed << setprecision(2) << d[i] << " | "
+            << setw(14) << fixed << setprecision(2) << liftforce << " |" << endl;
+    }
+
+    return 0;
+}
